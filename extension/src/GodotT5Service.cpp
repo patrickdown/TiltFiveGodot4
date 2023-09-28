@@ -9,6 +9,7 @@
 #include <godot_cpp/classes/rendering_server.hpp>
 #include <godot_cpp/classes/rendering_device.hpp>
 #include <godot_cpp/classes/xr_server.hpp>
+#include <godot_cpp/variant/utility_functions.hpp>
 #include <godot_cpp/core/defs.hpp> 
 
 using godot::Variant;
@@ -19,6 +20,7 @@ using godot::RenderingDevice;
 using godot::TypedArray;
 using godot::Error;
 using godot::XRServer;
+using godot::UtilityFunctions;
 using TextureLayeredType = godot::RenderingServer::TextureLayeredType;
 using T5Integration::Glasses;
 using T5Integration::WandButtons;
@@ -88,16 +90,14 @@ void GodotT5Logger::log_warning(const char* message, const char* func_name, cons
 }
 
 void GodotT5Logger::log_string(const char* message) {
-	std::cout << message << std::endl;
+    Variant v_msg = message;
+    UtilityFunctions::print_verbose(v_msg);
 }
-
 
 GodotT5Service::Ptr GodotT5ObjectRegistry::service() {
-
-		assert(_instance);
-		return std::static_pointer_cast<GodotT5Service>(ObjectRegistry::service());    
+	assert(_instance);
+	return std::static_pointer_cast<GodotT5Service>(ObjectRegistry::service());    
 }
-
 
 T5Integration::T5Service::Ptr GodotT5ObjectRegistry::get_service() {
     GodotT5Service::Ptr service;
@@ -124,15 +124,15 @@ T5Integration::T5Math::Ptr GodotT5ObjectRegistry::get_math() {
 }
 
 T5Integration::Logger::Ptr GodotT5ObjectRegistry::get_logger() {
-		GodotT5Logger::Ptr logger;
-		if (_logger.expired()) {
-			logger = std::make_shared<GodotT5Logger>();
-			_logger = logger;
-		}
-		else {
-			logger = std::static_pointer_cast<GodotT5Logger>(_logger.lock());		
-        }
-		return logger;
+    GodotT5Logger::Ptr logger;
+    if (_logger.expired()) {
+        logger = std::make_shared<GodotT5Logger>();
+        _logger = logger;
+    }
+    else {
+        logger = std::static_pointer_cast<GodotT5Logger>(_logger.lock());		
+    }
+    return logger;
 }
 
 }

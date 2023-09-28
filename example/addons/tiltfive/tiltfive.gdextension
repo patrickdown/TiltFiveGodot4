@@ -3,6 +3,9 @@
 entry_symbol = "tiltfive_library_init"
 compatibility_minimum = "4.1.0"
 
+[icons]
+T5Gameboard = "res://addons/tiltfive/assets/board.svg"
+
 [libraries]
 
 windows.x86_64.debug = "res://addons/tiltfive/bin/libgdtiltfive.windows.template_debug.x86_64.dll"
