@@ -57,9 +57,11 @@ func _enter_tree():
 
 		XRServer.add_interface(tilt_five_xr_interface)
 		tilt_five_xr_interface.glasses_event.connect(_on_glasses_event)
+		tilt_five_xr_interface.service_event.connect(_on_service_event)
 
 func _exit_tree():
 	if tilt_five_xr_interface:
+		tilt_five_xr_interface.service_event.disconnect(_on_service_event)
 		tilt_five_xr_interface.glasses_event.disconnect(_on_glasses_event)
 		if tilt_five_xr_interface.is_initialized():
 			tilt_five_xr_interface.uninitialize()
@@ -93,25 +95,36 @@ func _process_glasses():
 			glasses_state.attempting_to_reserve = true
 			tilt_five_xr_interface.reserve_glasses(glasses_id, t5_manager.get_glasses_display_name(glasses_id))
 
+func _on_service_event(event_num):
+	match event_num:
+		TiltFiveXRInterface.E_SERVICE_RUNNING:
+			t5_manager.service_started()
+		TiltFiveXRInterface.E_SERVICE_STOPPED:
+			t5_manager.service_stopped()
+		TiltFiveXRInterface.E_SERVICE_T5_UNAVAILABLE:
+			t5_manager.service_unvailable()
+		TiltFiveXRInterface.E_SERVICE_T5_INCOMPATIBLE_VERSION:
+			t5_manager.service_incorrect_version()
+	
 func _on_glasses_event(glasses_id, event_num):
 	var glasses_state = glasses_dict.get(glasses_id) as GlassesState
 	if not glasses_state:
 		glasses_state = GlassesState.new()
 		glasses_dict[glasses_id] = glasses_state
 	match event_num:
-		TiltFiveXRInterface.E_AVAILABLE:
+		TiltFiveXRInterface.E_GLASSES_AVAILABLE:
 			print_verbose(glasses_id, " E_AVAILABLE")
 			glasses_state.available = true
 			_process_glasses()
 
-		TiltFiveXRInterface.E_UNAVAILABLE:
+		TiltFiveXRInterface.E_GLASSES_UNAVAILABLE:
 			print_verbose(glasses_id, " E_UNAVAILABLE")
 			glasses_state.available = false
 			if glasses_state.attempting_to_reserve:
 				glasses_state.attempting_to_reserve = false
 				_process_glasses()
 
-		TiltFiveXRInterface.E_RESERVED:
+		TiltFiveXRInterface.E_GLASSES_RESERVED:
 			print_verbose(glasses_id, " E_RESERVED")
 			glasses_state.reserved = true
 			glasses_state.attempting_to_reserve = false
@@ -125,7 +138,7 @@ func _on_glasses_event(glasses_id, event_num):
 			else:
 				tilt_five_xr_interface.release_glasses(glasses_id)
 				
-		TiltFiveXRInterface.E_DROPPED:
+		TiltFiveXRInterface.E_GLASSES_DROPPED:
 			print_verbose(glasses_id, " E_DROPPED")
 			glasses_state.reserved = false
 
@@ -135,7 +148,7 @@ func _on_glasses_event(glasses_id, event_num):
 				glasses_state.glasses_scene = null
 				t5_manager.release_glasses_scene(glasses_scene)
 
-		TiltFiveXRInterface.E_TRACKING:
+		TiltFiveXRInterface.E_GLASSES_TRACKING:
 			var gbt = tilt_five_xr_interface.get_gameboard_type(glasses_id)
 			if glasses_state.gameboard_type != gbt:
 				glasses_state.gameboard_type = gbt
@@ -143,7 +156,7 @@ func _on_glasses_event(glasses_id, event_num):
 					t5_manager.set_glasses_scene_gameboard_type(glasses_state.glasses_scene, glasses_state.gameboard_type)
 			print_verbose(glasses_id, " E_TRACKING, Gameboard size = ", tilt_five_xr_interface.get_gameboard_extents(gbt))
 
-		TiltFiveXRInterface.E_NOT_TRACKING:
+		TiltFiveXRInterface.E_GLASSES_NOT_TRACKING:
 			print_verbose(glasses_id, " E_NOT_TRACKING")
 
 		_:
