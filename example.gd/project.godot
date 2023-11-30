@@ -38,6 +38,10 @@ trigger={
 3d_render/layer_2="Only spectator"
 3d_render/layer_3="Only glasses"
 
+[rendering]
+
+renderer/rendering_method="gl_compatibility"
+
 [xr]
 
 shaders/enabled=true
