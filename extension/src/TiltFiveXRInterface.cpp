@@ -161,6 +161,9 @@ bool TiltFiveXRInterface::_initialize() {
 
 void TiltFiveXRInterface::_uninitialize() {
 	if (_initialised) {
+		
+
+
 		if(t5_service->is_service_started()) {
 			t5_service->stop_service();
 		}
@@ -188,6 +191,7 @@ void TiltFiveXRInterface::reserve_glasses(const StringName glasses_id, const Str
 void TiltFiveXRInterface::start_display(const StringName glasses_id, Variant vobj, Variant oobj) {
 	if(!t5_service) return;
 
+
 	auto entry = lookup_glasses_entry(glasses_id);
 	ERR_FAIL_COND_MSG(!entry, "Glasses id was not found");
 
@@ -205,6 +209,7 @@ void TiltFiveXRInterface::_start_display(TiltFiveXRInterface::GlassesIndexEntry&
 		WARN_PRINT("Glasses need to be reserved to display viewport");
 		return;
 	}
+	glasses->start_display();
 	entry.viewport_id = viewport->get_instance_id();
 	entry.gameboard_id = gameboard->get_instance_id();
 
@@ -220,11 +225,13 @@ void TiltFiveXRInterface::stop_display(const StringName glasses_id) {
 
 
 void TiltFiveXRInterface::_stop_display(GlassesIndexEntry& entry) {
+	auto glasses = entry.glasses.lock();
 	auto viewport = Object::cast_to<SubViewport>(ObjectDB::get_instance(entry.viewport_id));
 	if(viewport) {
 		viewport->set_use_xr(false);
 		viewport->set_update_mode(godot::SubViewport::UpdateMode::UPDATE_DISABLED);
 	}
+	glasses->stop_display();
 	entry.viewport_id = ObjectID();
 	entry.gameboard_id = ObjectID();
 }

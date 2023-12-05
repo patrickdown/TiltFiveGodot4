@@ -109,7 +109,7 @@ void GodotT5Logger::log_warning(const char* message, const char* func_name, cons
 
 void GodotT5Logger::log_string(const char* message) {
     Variant v_msg = message;
-    UtilityFunctions::print_verbose(v_msg);
+    UtilityFunctions::print(v_msg);
 }
 
 GodotT5Service::Ptr GodotT5ObjectRegistry::service() {

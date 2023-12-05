@@ -91,19 +91,19 @@ func _on_glasses_event(glasses_id, event_num):
 		id_to_state[glasses_id] = xr_rig_state
 	match event_num:
 		TiltFiveXRInterface.E_GLASSES_AVAILABLE:
-			print_verbose(glasses_id, " E_AVAILABLE")
+			print(glasses_id, " E_AVAILABLE")
 			xr_rig_state.available = true
 			_process_glasses()
 
 		TiltFiveXRInterface.E_GLASSES_UNAVAILABLE:
-			print_verbose(glasses_id, " E_UNAVAILABLE")
+			print(glasses_id, " E_UNAVAILABLE")
 			xr_rig_state.available = false
 			if xr_rig_state.attempting_to_reserve:
 				xr_rig_state.attempting_to_reserve = false
 				_process_glasses()
 
 		TiltFiveXRInterface.E_GLASSES_RESERVED:
-			print_verbose(glasses_id, " E_RESERVED")
+			print(glasses_id, " E_RESERVED")
 			xr_rig_state.reserved = true
 			xr_rig_state.attempting_to_reserve = false
 			
@@ -116,7 +116,7 @@ func _on_glasses_event(glasses_id, event_num):
 				tilt_five_xr_interface.release_glasses(glasses_id)
 				
 		TiltFiveXRInterface.E_GLASSES_DROPPED:
-			print_verbose(glasses_id, " E_DROPPED")
+			print(glasses_id, " E_DROPPED")
 			xr_rig_state.reserved = false
 
 			var xr_rig = xr_rig_state.xr_rig
@@ -132,10 +132,10 @@ func _on_glasses_event(glasses_id, event_num):
 				xr_rig._gameboard_type = gbt
 				xr_rig._gameboard_size = tilt_five_xr_interface.get_gameboard_extents(gbt)
 				t5_manager.set_gameboard_type(xr_rig, gbt)
-			print_verbose(glasses_id, " E_TRACKING, Gameboard size = ", )
+			print(glasses_id, " E_TRACKING, Gameboard size = ", )
 
 		TiltFiveXRInterface.E_GLASSES_NOT_TRACKING:
-			print_verbose(glasses_id, " E_NOT_TRACKING")
+			print(glasses_id, " E_NOT_TRACKING")
 
 		_:
-			print_verbose(glasses_id, " - unknown event: ", event_num)
+			print(glasses_id, " - unknown event: ", event_num)
