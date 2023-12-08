@@ -3,6 +3,7 @@ name: Build on push
 
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events, but only for the main branch we'll create .zip files
+#
 on:
   [push, pull_request]
 
@@ -17,11 +18,14 @@ jobs:
       matrix:
         include:
           # Unsupported platforms are commented out.
-          #- name: 🐧 Linux (GCC)
-          #  os: ubuntu-20.04
-          #  platform: linux
-          #  artifact-name: gdtiltfive.linux
-          #  artifact-path: build/bin/libgdtiltfive.linux.*
+          - name: 🐧 Linux (GCC)
+            os: ubuntu-22.04
+            platform: linux
+            artifact-name: gdtiltfive.linux
+            artifact-path: |
+              build/bin/libgdtiltfive.linux.template_debug.x86_64.so
+              build/bin/libgdtiltfive.linux.template_release.x86_64.so
+              extension/TiltFiveNDK/lib/linux/x86_64/libTiltFiveNative.so
 
           - name: 🏁 Windows (x86_64, MSVC)
             os: windows-2019
@@ -117,7 +121,8 @@ jobs:
           cp source/CONTRIBUTORS.md plugin/addons/tiltfive
           cp source/CHANGES.md plugin/addons/tiltfive
           mkdir plugin/addons/tiltfive/bin
-          # cp gdtiltfive.linux/*.so plugin/addons/tiltfive/bin/
+          cp gdtiltfive.linux/build/bin/*.so plugin/addons/tiltfive/bin/
+          cp gdtiltfive.linux/extension/TiltFiveNDK/lib/linux/x86_64/*.so plugin/addons/tiltfive/bin/
           cp gdtiltfive.windows/build/bin/*.dll plugin/addons/tiltfive/bin/
           cp gdtiltfive.windows/extension/TiltFiveNDK/lib/win/x86_64/*.dll plugin/addons/tiltfive/bin/
           # cp gdtiltfive.android/*.so plugin/addons/tiltfive/bin/
@@ -132,7 +137,8 @@ jobs:
           cp source/CONTRIBUTORS.md plugin_cs/addons/tiltfive
           cp source/CHANGES.md plugin_cs/addons/tiltfive
           mkdir plugin_cs/addons/tiltfive/bin
-          # cp gdtiltfive.linux/*.so plugin_cs/addons/tiltfive/bin/
+          cp gdtiltfive.linux/build/bin/*.so plugin_cs/addons/tiltfive/bin/
+          cp gdtiltfive.linux/extension/TiltFiveNDK/lib/linux/x86_64/*.so plugin_cs/addons/tiltfive/bin/
           cp gdtiltfive.windows/build/bin/*.dll plugin_cs/addons/tiltfive/bin/
           cp gdtiltfive.windows/extension/TiltFiveNDK/lib/win/x86_64/*.dll plugin_cs/addons/tiltfive/bin/
           # cp gdtiltfive.android/*.so plugin_cs/addons/tiltfive/bin/

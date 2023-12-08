@@ -1,7 +1,7 @@
 [configuration]
 
 entry_symbol = "tiltfive_library_init"
-compatibility_minimum = "4.1.2"
+compatibility_minimum = "4.2.0"
 
 [icons]
 T5Gameboard = "res://addons/tiltfive/assets/board.svg"
@@ -28,4 +28,3 @@ linux.x86_64.debug = {
 linux.x86_64.release = {
     "res://addons/tiltfive/bin/libTiltFiveNative.so" : ""
 }
-
