@@ -33,6 +33,23 @@ func get_glasses_name(glasses_id: StringName):
 	return ""
 
 func _enter_tree():
+	process_mode = Node.PROCESS_MODE_ALWAYS
+	_create_xr_interface()
+
+func _exit_tree():
+	_destroy_xr_interface()
+
+func _notification(what):
+	match what:
+		NOTIFICATION_APPLICATION_PAUSED:
+			_destroy_xr_interface()
+		NOTIFICATION_APPLICATION_RESUMED:
+			_create_xr_interface()
+			if !tilt_five_xr_interface.is_initialized():
+				tilt_five_xr_interface.initialize()
+				
+func _create_xr_interface():
+	if (tilt_five_xr_interface): return
 	tilt_five_xr_interface = TiltFiveXRInterface.new()
 	if tilt_five_xr_interface:
 		tilt_five_xr_interface.application_id = T5ProjectSettings.application_id
@@ -44,7 +61,7 @@ func _enter_tree():
 		tilt_five_xr_interface.glasses_event.connect(_on_glasses_event)
 		tilt_five_xr_interface.service_event.connect(_on_service_event)
 
-func _exit_tree():
+func _destroy_xr_interface():
 	if tilt_five_xr_interface:
 		tilt_five_xr_interface.service_event.disconnect(_on_service_event)
 		tilt_five_xr_interface.glasses_event.disconnect(_on_glasses_event)
@@ -53,6 +70,7 @@ func _exit_tree():
 		
 		XRServer.remove_interface(tilt_five_xr_interface)
 		tilt_five_xr_interface = null
+		id_to_state.clear()
 
 func _ready():
 	if not t5_manager:
