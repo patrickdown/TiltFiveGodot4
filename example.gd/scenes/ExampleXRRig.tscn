@@ -89,5 +89,7 @@ transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 
 pixel_size = 0.01
 text = "Name"
 
+[node name="T5ImageCapture" type="T5ImageCapture" parent="Origin" index="4"]
+
 [connection signal="button_pressed" from="Origin/Wand_1" to="Origin/Wand_1" method="_on_button_pressed"]
 [connection signal="button_released" from="Origin/Wand_1" to="Origin/Wand_1" method="_on_button_released"]
