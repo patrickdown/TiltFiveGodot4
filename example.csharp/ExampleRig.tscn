@@ -1,10 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://ba8h6c1mtb3h0"]
+[gd_scene load_steps=9 format=3 uid="uid://ba8h6c1mtb3h0"]
 
 [ext_resource type="PackedScene" uid="uid://dpbt52d0p5wjw" path="res://addons/tiltfive/scenes/T5XRRig.tscn" id="1_x7gas"]
 [ext_resource type="PackedScene" uid="uid://b1cd3jc00rhal" path="res://addons/tiltfive/assets/T5GlassesModel.tscn" id="2_dp1ep"]
 [ext_resource type="Script" path="res://WandControl.cs" id="2_epf7w"]
 [ext_resource type="PackedScene" uid="uid://dnx42xctfl3mx" path="res://Controls.tscn" id="2_ge6xw"]
 [ext_resource type="PackedScene" uid="uid://fipea8dbocg4" path="res://addons/tiltfive/assets/T5WandModel.tscn" id="5_j53ao"]
+[ext_resource type="Script" path="res://addons/tiltfive/scenes/T5ImageCaptureCS.cs" id="6_mxd08"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tnkdi"]
 albedo_color = Color(0.580392, 0.396078, 0.278431, 1)
@@ -28,3 +29,6 @@ selected = SubResource("StandardMaterial3D_kgxv6")
 transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0.585525, -0.00207818, 0.223126)
 
 [node name="T5-wand" parent="Origin/Wand_1" index="1" instance=ExtResource("5_j53ao")]
+
+[node name="T5ImageCapture" type="T5ImageCapture" parent="Origin" index="2"]
+script = ExtResource("6_mxd08")

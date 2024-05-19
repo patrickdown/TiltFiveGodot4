@@ -12,7 +12,7 @@ config_version=5
 
 config/name="T5Example.gd"
 run/main_scene="res://main.tscn"
-config/features=PackedStringArray("4.1")
+config/features=PackedStringArray("4.2")
 run/max_fps=60
 config/icon="res://icon.png"
 
@@ -31,6 +31,11 @@ trigger={
 "events": [Object(InputEventJoypadMotion,"resource_local_to_scene":false,"resource_name":"","device":-1,"axis":5,"axis_value":1.0,"script":null)
 ]
 }
+toggle_camera={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":67,"key_label":0,"unicode":99,"echo":false,"script":null)
+]
+}
 
 [layer_names]
 
@@ -41,3 +46,4 @@ trigger={
 [xr]
 
 shaders/enabled=true
+tilt_five/debug_logging=true

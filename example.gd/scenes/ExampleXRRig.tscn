@@ -80,5 +80,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.77558, 0)
 mesh = SubResource("BoxMesh_aaxuw")
 surface_material_override/0 = SubResource("StandardMaterial3D_iuako")
 
+[node name="T5ImageCapture" type="T5ImageCapture" parent="Origin" index="3"]
+
 [connection signal="button_pressed" from="Origin/Wand_1" to="Origin/Wand_1" method="_on_button_pressed"]
 [connection signal="button_released" from="Origin/Wand_1" to="Origin/Wand_1" method="_on_button_released"]
